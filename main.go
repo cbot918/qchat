@@ -12,16 +12,18 @@ import (
 
 var log = fmt.Println
 
-const port = ":8887"
+const (
+	port = ":8887"
+	web  = "./web"
+)
 
-type Chaty struct {
+type Qchat struct {
 	Conns  []Conn
 	Counts int32
 }
 
 type Conn struct {
 	Id   string
-	Name string `json:"name"`
 	Conn *websocket.Conn
 	User User
 }
@@ -35,13 +37,13 @@ type Message struct {
 	Group   string `json:"group"`
 }
 
-func NewChaty() *Chaty {
-	return &Chaty{
+func NewQchat() *Qchat {
+	return &Qchat{
 		Counts: 0,
 	}
 }
 
-func (c *Chaty) handleWs(ws *websocket.Conn) {
+func (c *Qchat) handleWs(ws *websocket.Conn) {
 	c.Counts += 1
 	conn := Conn{
 		Id:   uuid.New().String(),
@@ -53,21 +55,9 @@ func (c *Chaty) handleWs(ws *websocket.Conn) {
 
 	c.readListener(conn)
 
-	// for _, conn := range c.Conns {
-
-	// }
-
-	// j, err := json.MarshalIndent(ws, "", "  ")
-	// if err != nil {
-	// 	log("marshal err")
-	// 	return
-	// }
-
-	// log(string(j))
-	// wsRead(ws)
 }
 
-func (c *Chaty) readListener(ws Conn) {
+func (c *Qchat) readListener(ws Conn) {
 	buf := make([]byte, 1024)
 
 	for {
@@ -93,25 +83,34 @@ func (c *Chaty) readListener(ws Conn) {
 
 			log("id: ", ws.Id)
 			log("name: ", ws.User.Name)
+			c.BroadCast(ws.User.Name, " entered")
 		} else { // else deal with other message with data and channel
-			var message Message
-			err = json.Unmarshal(msg, &message)
+			var m Message
+			err = json.Unmarshal(msg, &m)
 			if err != nil {
 				log("marshal message failed")
 				continue
 			}
-			log("group: ", message.Group)
-			log("data: ", message.Content)
+			log("group: ", m.Group)
+			log("content: ", m.Content)
+			c.BroadCast(ws.User.Name, m.Content)
 		}
-
 	}
+}
 
+func (c *Qchat) BroadCast(name string, content string) {
+	for _, conn := range c.Conns {
+		log(conn.User.Name)
+		log("in broadcast loop")
+		conn.Conn.Write([]byte(name + ": " + content))
+	}
 }
 
 func main() {
 
-	chat := NewChaty()
+	chat := NewQchat()
 
+	http.Handle("/", http.FileServer(http.Dir(web)))
 	http.Handle("/ws", websocket.Handler(chat.handleWs))
 	log("listening: ", port)
 	err := http.ListenAndServe(port, nil)
