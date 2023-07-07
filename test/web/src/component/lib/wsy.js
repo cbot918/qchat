@@ -11,11 +11,13 @@ const wsy = (socket)=>{
     } 
     if (event === "message") {
       socket.onmessage = (e)=>{
-        const res = util().dj(e.data)
-        console.log(res)
-        fn(res)
+        // const res = util().dj(e.data)
+        // console.log(res)
+        // fn(res)
+        console.log(`res message: ${e.data}`)
       }
     }
+
     if (event === "close"){
       console.log("socket close")
       socket.onclose = () => {

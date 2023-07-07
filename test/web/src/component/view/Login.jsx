@@ -1,10 +1,11 @@
 import React from 'react'
 import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-// import {UserContext} from '../../App'
+import {UserContext} from '../../App'
 // dispatch({type:"USER",payload:data.user})
 //     const {state,dispatch} = useContext(UserContext)
 function Login(){
+  const {state,dispatch} = React.useContext(UserContext)
   const navigate = useNavigate()
   const [email,setEmail] = React.useState("")
   const [password,setPassword] = React.useState("")
@@ -24,7 +25,7 @@ function Login(){
       console.log(data)
       localStorage.setItem("user", data.name)
       localStorage.setItem("token", data.token)
-      
+      dispatch({type:"USER", payload:data.name})
       navigate("/chat")
     })
   }

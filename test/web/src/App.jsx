@@ -19,14 +19,8 @@ function Routing(props){
 
   const ws = React.useRef(null);
   useEffect(()=>{
-    // ws.current = props.props.socket 
-    // ws.current.onopen = () => console.log("ws opened");
-    // ws.current.onclose = () => console.log("ws closed");
-    // socket.onopen = ()=>{
-    //   console.log("socket open")
-    //   socket.send('{"ch":"h","msg":"fromclient"}')
-    // }
     const user = localStorage.getItem("user")
+    console.log(`user: ${user}`)
     if (user){
       console.log("app.jsx state: ", user)
       dispatch({type: "USER", payload: user})
@@ -54,7 +48,7 @@ export default function App() {
   
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const socket = new WebSocket("ws://localhost:4545/ws")
+  const socket = new WebSocket("ws://localhost:8887/ws")
   // console.log(socket)
 
   return (

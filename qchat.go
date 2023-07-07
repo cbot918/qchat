@@ -69,6 +69,7 @@ func (c *Qchat) readListener(ws Conn) {
 		msg := buf[:n]
 
 		if IsFirstMsg(msg) { // if init message with user name
+			log(string(msg))
 			var user User
 			err = json.Unmarshal(buf[:n], &user)
 			if err != nil {
