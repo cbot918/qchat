@@ -14,13 +14,14 @@ func main() {
 		panic(err)
 	}
 
-	chat := NewQchat()
+	s := NewStorage(cfg)
+	s.InitPsql()
 
-	h := NewHandler()
+	chat := NewQchat(s)
 
 	http.Handle("/", http.FileServer(http.Dir(cfg.Web)))
 	http.Handle("/ws", websocket.Handler(chat.handleWs))
-	http.HandleFunc("/auth/login", h.Login)
+	http.HandleFunc("/auth/login", chat.H.LoginHandler)
 	log("listening: ", cfg.Port)
 	err = http.ListenAndServe(cfg.Port, nil)
 	if err != nil {

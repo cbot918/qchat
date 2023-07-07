@@ -26,9 +26,11 @@ function Routing(props){
     //   console.log("socket open")
     //   socket.send('{"ch":"h","msg":"fromclient"}')
     // }
+    const user = localStorage.getItem("user")
     if (user){
       console.log("app.jsx state: ", user)
       dispatch({type: "USER", payload: user})
+      navigate('/chat')
     } else {
       navigate('/login')
     }

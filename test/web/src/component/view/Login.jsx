@@ -1,9 +1,15 @@
+import React from 'react'
 import {Link} from "react-router-dom";
-
-
+import { useNavigate } from 'react-router-dom';
+// import {UserContext} from '../../App'
+// dispatch({type:"USER",payload:data.user})
+//     const {state,dispatch} = useContext(UserContext)
 function Login(){
+  const navigate = useNavigate()
+  const [email,setEmail] = React.useState("")
+  const [password,setPassword] = React.useState("")
   const url = "http://localhost:8887/auth/login"
-  const data = {email: "yale918@gmail.com", password: "12345"}
+  const data = {"email":"yale918@gmail.com","password":"12345"}
   const postData = (url, data) =>{
     fetch(url,{
       body: JSON.stringify(data),
@@ -14,7 +20,12 @@ function Login(){
     })
     .then(res=>res.json())
     .then(data=>{
+      console.log("data:")
       console.log(data)
+      localStorage.setItem("user", data.name)
+      localStorage.setItem("token", data.token)
+      
+      navigate("/chat")
     })
   }
   
@@ -41,6 +52,9 @@ function Login(){
               type="email"
               className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
               placeholder="Enter email"
+              onChange={(e)=>{
+                setEmail(e.target.value)
+              }}
             />
 
             <span className="absolute inset-y-0 right-4 inline-flex items-center">
@@ -69,6 +83,9 @@ function Login(){
               type="password"
               className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
               placeholder="Enter password"
+              onChange={(e)=>{
+                setPassword(e.target.value)
+              }}
             />
 
             <span className="absolute inset-y-0 right-4 inline-flex items-center">
@@ -106,6 +123,11 @@ function Login(){
           <button
             type="submit"
             className="ml-3 inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+
+            onClick={(e)=>{
+              e.preventDefault()
+              postData(url,{email,password})
+            }}
           >
             Sign in
           </button>

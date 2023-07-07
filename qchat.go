@@ -9,8 +9,19 @@ import (
 )
 
 type Qchat struct {
+	H      *Handler
 	Conns  []Conn
 	Counts int32
+	S      Storage
+}
+
+func NewQchat(s Storage) *Qchat {
+	h := NewHandler(s)
+	return &Qchat{
+		Counts: 0,
+		H:      h,
+		S:      s,
+	}
 }
 
 type Conn struct {
@@ -26,12 +37,6 @@ type User struct {
 type Message struct {
 	Content string `json:"content"`
 	Group   string `json:"group"`
-}
-
-func NewQchat() *Qchat {
-	return &Qchat{
-		Counts: 0,
-	}
 }
 
 func (c *Qchat) handleWs(ws *websocket.Conn) {
