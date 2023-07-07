@@ -1,37 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="./favicon.ico" rel="icon" />
-  <title>Qchat</title>
-</head>
-<body>
-  <input 
-    type="text"
-    placeholder="message"
-    onkeydown="((e)=>{
-      if (e.key === 'Enter'){
-        const msg = {content:e.target.value, group:'default '}
-        ws.send(JSON.stringify(msg))
-        e.target.value = ''
-      }
-    })(event)" 
-  >
-  <script>
-    window.ws = {}
-    const names = ["yale","node","kenny", "Nami", "Jenny", "Willy"]
-    const socket = new WebSocket("ws://localhost:8887/ws")
-    socket.onopen = ()=>{
-      const user = {_init_user_name:names[Math.floor(Math.random() * 6)]}
-
-      socket.send(JSON.stringify(user))
-      ws = socket
-    }
-    socket.onmessage = (msg) => {
-      console.log(msg.data)
-    }
-
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
