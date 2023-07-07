@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link href="./favicon.ico" rel="icon" />
+  <title>Qchat</title>
 </head>
 <body>
   <input 
@@ -22,7 +23,6 @@
     const names = ["yale","node","kenny", "Nami", "Jenny", "Willy"]
     const socket = new WebSocket("ws://localhost:8887/ws")
     socket.onopen = ()=>{
-      console.log("ws connected")
       const user = {_init_user_name:names[Math.floor(Math.random() * 6)]}
 
       socket.send(JSON.stringify(user))
