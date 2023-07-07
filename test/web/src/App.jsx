@@ -24,7 +24,7 @@ function Routing(props){
     if (user){
       console.log("app.jsx state: ", user)
       dispatch({type: "USER", payload: user})
-      navigate('/chat')
+      navigate('/home')
     } else {
       navigate('/login')
     }
@@ -32,7 +32,7 @@ function Routing(props){
 
   return (
     <Routes>
-      <Route index            element={<Home />} />
+      <Route path="home"            element={<Home />} />
       <Route path="about"     element={<About />} />
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="login"     element={<Login />}/>
@@ -54,7 +54,7 @@ export default function App() {
   return (
     <UserContext.Provider value={{state, dispatch}}>
       <BrowserRouter>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routing socket={socket}/>
       </BrowserRouter>
     </UserContext.Provider>

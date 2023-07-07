@@ -10,9 +10,13 @@ require (
 	golang.org/x/net v0.12.0
 )
 
-require github.com/mattn/go-sqlite3 v1.14.17 // indirect
+require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/mattn/go-sqlite3 v1.14.17 // indirect
+)
 
 require (
+	github.com/cbot918/liby v1.1.9
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	gorm.io/driver/sqlite v1.5.2

@@ -8,8 +8,8 @@ CREATE TABLE "users" (
 
 CREATE TABLE "friend" (
   "id" bigserial PRIMARY KEY NOT NULL,
-  "friend_from" bigint NOT NULL,
-  "friend_to" bigint NOT NULL
+  "from" bigint NOT NULL,
+  "to" bigint NOT NULL
 );
 
 ALTER TABLE "friend" ADD FOREIGN KEY ("friend_from") REFERENCES "users" ("id");

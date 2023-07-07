@@ -39,6 +39,26 @@ func (s *Service) LoginService(l *LoginParam) (string, error) {
 	return mockToken, nil
 }
 
+type ListFriendDbParam struct {
+	Id   string `db:"id"`
+	Name string `db:"name"`
+}
+
+func (s *Service) ListFriendService() ([]ListFriendDbParam, error) {
+
+	q := "SELECT users.id,name FROM users JOIN friend ON users.id = to_user WHERE from_user = (select id from users where email=$1)"
+
+	friends := []ListFriendDbParam{}
+
+	err := s.S.Psql.Select(&friends, q, "yale918@gmail.com")
+	if err != nil {
+		log("friend list query db failed")
+		log(err)
+		return nil, err
+	}
+	return friends, nil
+}
+
 func (s *Service) Test() {
 	if err := s.S.Psql.Ping(); err != nil {
 		log("service ping failed")

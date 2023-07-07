@@ -60,6 +60,7 @@ func (c *Qchat) readListener(ws Conn) {
 		n, err := ws.Conn.Read(buf)
 		if err != nil {
 			if err == io.EOF {
+				c.Counts -= 1
 				log("client disconnect")
 				break
 			}

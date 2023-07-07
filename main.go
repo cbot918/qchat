@@ -22,6 +22,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir(cfg.Web)))
 	http.Handle("/ws", websocket.Handler(chat.handleWs))
 	http.HandleFunc("/auth/login", chat.H.LoginHandler)
+	http.HandleFunc("/friend/list", chat.H.ListFriend)
 	log("listening: ", cfg.Port)
 	err = http.ListenAndServe(cfg.Port, nil)
 	if err != nil {

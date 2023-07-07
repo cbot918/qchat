@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"regexp"
+
+	"github.com/cbot918/liby/jwty"
 )
 
 type Handler struct {
@@ -69,15 +71,48 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-// func responseOk(w http.ResponseWriter, message string) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	jsonData, _ := json.Marshal(struct {
-// 		Message string `json:"message"`
-// 	}{
-// 		Message: message,
-// 	})
-// 	w.Write(jsonData)
-// }
+type ListFriendParam struct {
+}
+
+type ListFriendResponse struct {
+	Message string `json:"message"`
+}
+
+func (h *Handler) ListFriend(w http.ResponseWriter, r *http.Request) {
+
+	j := jwty.New()
+	token, err := j.FastJwt(1, "yale918@gmail.com")
+	if err != nil {
+		log("create jwt token failed")
+		return
+	}
+	log("token: " + token)
+
+	clams := j.DecodeJwt(token)
+	log("clams: ", clams)
+	log(clams.Email)
+	log(clams.Id)
+
+	resFriends, err := h.Svc.ListFriendService()
+	if err != nil {
+		log("listfriendservice failed")
+		responseError(w, 400, err.Error())
+		return
+	}
+
+	log(resFriends)
+
+	responseOk(w, ListFriendResponse{
+		Message: "test",
+	})
+
+}
+
+func responseOk(w http.ResponseWriter, a any) {
+	w.Header().Set("Content-Type", "application/json")
+	jsonData, _ := json.Marshal(a)
+	w.Write(jsonData)
+}
 
 func responseError(w http.ResponseWriter, code int, message string) {
 	// w.WriteHeader(code)
