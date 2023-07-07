@@ -1,14 +1,20 @@
 package main
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/rs/zerolog"
+)
 
 type Service struct {
 	S Storage
+	L zerolog.Logger
 }
 
-func NewService(s Storage) Service {
+func NewService(s Storage, l zerolog.Logger) Service {
 	return Service{
 		S: s,
+		L: l,
 	}
 }
 

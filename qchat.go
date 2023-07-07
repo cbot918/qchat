@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 	"golang.org/x/net/websocket"
 )
 
@@ -13,14 +14,16 @@ type Qchat struct {
 	Conns  []Conn
 	Counts int32
 	S      Storage
+	L      zerolog.Logger
 }
 
-func NewQchat(s Storage) *Qchat {
-	h := NewHandler(s)
+func NewQchat(s Storage, l zerolog.Logger) *Qchat {
+	h := NewHandler(s, l)
 	return &Qchat{
 		Counts: 0,
 		H:      h,
 		S:      s,
+		L:      l,
 	}
 }
 

@@ -6,14 +6,16 @@ import (
 	"regexp"
 
 	"github.com/cbot918/liby/jwty"
+	"github.com/rs/zerolog"
 )
 
 type Handler struct {
 	Svc Service
+	L   zerolog.Logger
 }
 
-func NewHandler(s Storage) *Handler {
-	svc := NewService(s)
+func NewHandler(s Storage, l zerolog.Logger) *Handler {
+	svc := NewService(s, l)
 	return &Handler{
 		Svc: svc,
 	}
