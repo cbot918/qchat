@@ -31,5 +31,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+type Yhandler struct{}
+
+func (y *Yhandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	log("hihi")
+
+	y.ServeHTTP(w, r)
 
 }
